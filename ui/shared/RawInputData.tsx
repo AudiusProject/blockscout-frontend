@@ -12,7 +12,7 @@ interface Props {
 }
 
 const RawInputData = ({ hex }: Props) => {
-  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('Hex');
+  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('UTF-8');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDataType(event.target.value as DataType);

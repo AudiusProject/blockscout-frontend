@@ -4,7 +4,6 @@ import {
   Text,
   Box,
   Icon as ChakraIcon,
-  Link,
   Spinner,
   Flex,
   Tooltip,
@@ -15,7 +14,6 @@ import {
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
 
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
@@ -32,7 +30,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -50,15 +47,6 @@ import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 const TxDetails = () => {
   const { data, isPlaceholderData, isError, socketStatus, error } = useFetchTxInfo();
 
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
-
-  const handleCutClick = React.useCallback(() => {
-    setIsExpanded((flag) => !flag);
-    scroller.scrollTo('TxDetails__cutLink', {
-      duration: 500,
-      smooth: true,
-    });
-  }, []);
   const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   if (isError) {
@@ -196,7 +184,6 @@ const TxDetails = () => {
             </Skeleton>
           </DetailsInfoItem>
         ) }
-        <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
 
         { divider }
 
@@ -412,72 +399,53 @@ const TxDetails = () => {
             ) }
           </>
         ) }
-        <GridItem colSpan={{ base: undefined, lg: 2 }}>
-          <Element name="TxDetails__cutLink">
-            <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
-              <Link
-                display="inline-block"
-                fontSize="sm"
-                textDecorationLine="underline"
-                textDecorationStyle="dashed"
-                onClick={ handleCutClick }
-              >
-                { isExpanded ? 'Hide details' : 'View details' }
-              </Link>
-            </Skeleton>
-          </Element>
-        </GridItem>
-        { isExpanded && (
-          <>
-            <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
-            <DetailsInfoItem
-              title="Other"
-              hint="Other data related to this transaction"
-            >
-              {
-                [
-                  typeof data.type === 'number' && (
-                    <Box key="type">
-                      <Text as="span" fontWeight="500">Txn type: </Text>
-                      <Text fontWeight="600" as="span">{ data.type }</Text>
-                      { data.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
-                    </Box>
-                  ),
-                  <Box key="nonce">
-                    <Text as="span" fontWeight="500">Nonce: </Text>
-                    <Text fontWeight="600" as="span">{ data.nonce }</Text>
-                  </Box>,
-                  data.position !== null && (
-                    <Box key="position">
-                      <Text as="span" fontWeight="500">Position: </Text>
-                      <Text fontWeight="600" as="span">{ data.position }</Text>
-                    </Box>
-                  ),
-                ]
-                  .filter(Boolean)
-                  .map((item, index) => (
-                    <>
-                      { index !== 0 && <TextSeparator/> }
-                      { item }
-                    </>
-                  ))
-              }
-            </DetailsInfoItem>
-            <DetailsInfoItem
-              title="Raw input"
-              hint="Binary data included with the transaction. See logs tab for additional info"
-            >
-              <RawInputData hex={ data.raw_input }/>
-            </DetailsInfoItem>
-            { data.decoded_input && (
-              <DetailsInfoItem
-                title="Decoded input data"
-                hint="Decoded input data"
-              >
-                <LogDecodedInputData data={ data.decoded_input }/>
-              </DetailsInfoItem>
-            ) }
-          </>
+        <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+        <DetailsInfoItem
+          title="Other"
+          hint="Other data related to this transaction"
+        >
+          {
+            [
+              typeof data.type === 'number' && (
+                <Box key="type">
+                  <Text as="span" fontWeight="500">Txn type: </Text>
+                  <Text fontWeight="600" as="span">{ data.type }</Text>
+                  { data.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
+                </Box>
+              ),
+              <Box key="nonce">
+                <Text as="span" fontWeight="500">Nonce: </Text>
+                <Text fontWeight="600" as="span">{ data.nonce }</Text>
+              </Box>,
+              data.position !== null && (
+                <Box key="position">
+                  <Text as="span" fontWeight="500">Position: </Text>
+                  <Text fontWeight="600" as="span">{ data.position }</Text>
+                </Box>
+              ),
+            ]
+              .filter(Boolean)
+              .map((item, index) => (
+                <>
+                  { index !== 0 && <TextSeparator/> }
+                  { item }
+                </>
+              ))
+          }
+        </DetailsInfoItem>
+        <DetailsInfoItem
+          title="Raw input"
+          hint="Binary data included with the transaction. See logs tab for additional info"
+        >
+          <RawInputData hex={ data.raw_input }/>
+        </DetailsInfoItem>
+        { data.decoded_input && (
+          <DetailsInfoItem
+            title="Decoded input data"
+            hint="Decoded input data"
+          >
+            <LogDecodedInputData data={ data.decoded_input }/>
+          </DetailsInfoItem>
         ) }
       </Grid>
     </>
