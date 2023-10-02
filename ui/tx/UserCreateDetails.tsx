@@ -1,7 +1,9 @@
 import {
   Grid,
+  GridItem,
   Textarea,
   Image,
+  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -29,8 +31,9 @@ const ProfilePicture = ({ userData }: { userData: UserData }) => {
   }
 
   return (
-    <div>
-    </div>
+    <>
+    None
+    </>
   );
 };
 
@@ -41,8 +44,9 @@ const CoverPhoto = ({ userData }: { userData: UserData }) => {
   }
 
   return (
-    <div>
-    </div>
+    <>
+    None
+    </>
   );
 };
 
@@ -50,37 +54,41 @@ const UserCreateDetails = ({ data }: Props) => {
   const startIndex = data.indexOf('{"cid"');
   const endIndex = data.lastIndexOf('}}') + 2;
   if (startIndex === -1 || endIndex === -1) {
-    return; // malformed or not found
+    return null; // malformed or not found
   }
 
   const extractedData = data.substring(startIndex, endIndex);
-  const userData: UserData = JSON.parse(extractedData);
+  const userData: UserData = JSON.parse(extractedData) as UserData;
 
   return (
     <Grid width="100%"columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
-      <span>Entity Manager Action</span>
-      <span>User Create</span>
-      <span>Handle</span>
-      <span>@{ userData?.data?.handle }</span>
-      <span>Name</span>
-      <span>{ userData?.data?.name }</span>
-      <span>Profile Picture</span>
+      <GridItem>Entity Manager Action</GridItem>
+      <GridItem>User Create</GridItem>
+      <GridItem>Handle</GridItem>
+      <GridItem>@{ userData?.data?.handle }</GridItem>
+      <GridItem>Name</GridItem>
+      <GridItem>{ userData?.data?.name }</GridItem>
+      <GridItem>Profile Picture</GridItem>
       <ProfilePicture userData={ userData }/>
-      <span>Cover Photo</span>
+      <GridItem>Cover Photo</GridItem>
       <CoverPhoto userData={ userData }/>
-      <span>Data</span>
-      <div>
-        <Textarea
-          value={ extractedData }
-          w="100%"
-          maxH="220px"
-          mt={ 2 }
-          p={ 4 }
-          variant="filledInactive"
-          fontSize="sm"
-        />
-        <CopyToClipboard text={ extractedData }/>
-      </div>
+      <GridItem>Data</GridItem>
+      <GridItem display="flex">
+        <Box flexGrow={ 1 }>
+          <Textarea
+            value={ extractedData }
+            w="100%"
+            maxH="220px"
+            mt={ 2 }
+            p={ 4 }
+            variant="filledInactive"
+            fontSize="sm"
+          />
+        </Box>
+        <Box>
+          <CopyToClipboard text={ extractedData }/>
+        </Box>
+      </GridItem>
     </Grid>
   );
 };
