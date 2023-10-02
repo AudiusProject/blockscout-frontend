@@ -38,6 +38,7 @@ import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import AudiusDetails from 'ui/tx/AudiusDetails';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
@@ -182,6 +183,29 @@ const TxDetails = () => {
             <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
               <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
             </Skeleton>
+          </DetailsInfoItem>
+        ) }
+
+        { divider }
+
+        <DetailsInfoItem
+          title="Audius details"
+          hint="Audius-specific information included in the transaction data"
+        >
+          <AudiusDetails hex={ data.raw_input }/>
+        </DetailsInfoItem>
+        <DetailsInfoItem
+          title="Raw input"
+          hint="Binary data included with the transaction. See logs tab for additional info"
+        >
+          <RawInputData hex={ data.raw_input }/>
+        </DetailsInfoItem>
+        { data.decoded_input && (
+          <DetailsInfoItem
+            title="Decoded input data"
+            hint="Decoded input data"
+          >
+            <LogDecodedInputData data={ data.decoded_input }/>
           </DetailsInfoItem>
         ) }
 
@@ -400,6 +424,8 @@ const TxDetails = () => {
           </>
         ) }
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+        { divider }
+
         <DetailsInfoItem
           title="Other"
           hint="Other data related to this transaction"
@@ -433,20 +459,6 @@ const TxDetails = () => {
               ))
           }
         </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Raw input"
-          hint="Binary data included with the transaction. See logs tab for additional info"
-        >
-          <RawInputData hex={ data.raw_input }/>
-        </DetailsInfoItem>
-        { data.decoded_input && (
-          <DetailsInfoItem
-            title="Decoded input data"
-            hint="Decoded input data"
-          >
-            <LogDecodedInputData data={ data.decoded_input }/>
-          </DetailsInfoItem>
-        ) }
       </Grid>
     </>
   );
