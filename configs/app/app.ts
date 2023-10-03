@@ -10,6 +10,7 @@ const baseUrl = [
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 const isDev = process.env.NODE_ENV === 'development';
+const audiusEnv = getEnvValue('audius_discprov_env');
 
 const app = Object.freeze({
   isDev,
@@ -17,6 +18,7 @@ const app = Object.freeze({
   host: appHost,
   port: appPort,
   baseUrl,
+  audiusEnv,
   useProxy: getEnvValue('NEXT_PUBLIC_USE_NEXT_JS_PROXY') === 'true',
 });
 

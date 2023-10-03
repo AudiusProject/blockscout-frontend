@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import buildImageUrl from 'lib/audius/buildImageUrl';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface TrackData {
@@ -24,7 +25,8 @@ interface Props {
 
 const CoverArt = ({ trackData }: { trackData: TrackData }) => {
   if (trackData?.data?.cover_art_sizes) {
-    const imageUrl = `https://creatornode12.staging.audius.co/content/${ trackData.data.cover_art_sizes }/150x150.jpg`;
+    // const imageUrl = `https://creatornode12.staging.audius.co/content/${ trackData.data.cover_art_sizes }/150x150.jpg`;
+    const imageUrl = buildImageUrl(trackData.data.cover_art_sizes, '150x150.jpg');
     return <Image src={ imageUrl } alt="Cover Art"/>;
   }
 

@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import buildImageUrl from 'lib/audius/buildImageUrl';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface UserData {
@@ -26,7 +27,8 @@ interface Props {
 
 const ProfilePicture = ({ userData }: { userData: UserData }) => {
   if (userData?.data?.profile_picture_sizes) {
-    const imageUrl = `https://creatornode12.staging.audius.co/content/${ userData.data.profile_picture_sizes }/150x150.jpg`;
+    // const imageUrl = `https://creatornode12.staging.audius.co/content/${ userData.data.profile_picture_sizes }/150x150.jpg`;
+    const imageUrl = buildImageUrl(userData.data.profile_picture_sizes, '150x150.jpg');
     return <Image src={ imageUrl } alt="Profile Picture"/>;
   }
 
@@ -39,7 +41,8 @@ const ProfilePicture = ({ userData }: { userData: UserData }) => {
 
 const CoverPhoto = ({ userData }: { userData: UserData }) => {
   if (userData?.data?.cover_photo_sizes) {
-    const imageUrl = `https://creatornode12.staging.audius.co/content/${ userData.data.cover_photo_sizes }/640x.jpg`;
+    // const imageUrl = `https://creatornode12.staging.audius.co/content/${ userData.data.cover_photo_sizes }/640x.jpg`;
+    const imageUrl = buildImageUrl(userData.data.cover_photo_sizes, '640x.jpg');
     return <Image src={ imageUrl } alt="Cover Photo"/>;
   }
 
