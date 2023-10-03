@@ -335,6 +335,9 @@ const schema = yup
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY: yup.string(),
+
+    // 7. Audius envs
+    audius_discprov_env: yup.string(),
   })
   .concat(accountSchema)
   .concat(adsBannerSchema)

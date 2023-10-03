@@ -16,7 +16,7 @@ fi
 echo "window.__envs = {" >> $output_file;
 
 # Iterate through all environment variables
-for var in $(env | grep '^NEXT_PUBLIC_|^audius_discprov_env=' | cut -d= -f1); do
+for var in $(env | grep -E '^NEXT_PUBLIC_|^audius_discprov_env=' | cut -d= -f1); do
   # Get the value of the variable
   value="${!var}"
 
